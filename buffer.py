@@ -35,13 +35,22 @@ class Buffer(object):
         glEnableVertexAttribArray(0)
         #atributo color
         glVertexAttribPointer(1, # attribute number
-                              3, # size
+                              2, # size
                               GL_FLOAT, # type
                               GL_FALSE, # is normalized
-                              4 * 6, # Stride size in bytes
+                              4 * 8, # Stride size in bytes
                               ctypes.c_void_p(4*3)) # Offset 
         
         glEnableVertexAttribArray(1)
+        #atributo normales
+        glVertexAttribPointer(2, # attribute number
+                              3, # size
+                              GL_FLOAT, # type
+                              GL_FALSE, # is normalized
+                              4 * 8, # Stride size in bytes
+                              ctypes.c_void_p(4*5)) # Offset 
         
-        glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertBuffer) / 6))
+        glEnableVertexAttribArray(2)
+        
+        glDrawArrays(GL_TRIANGLES, 0, int(len(self.vertBuffer) / 8))
         
