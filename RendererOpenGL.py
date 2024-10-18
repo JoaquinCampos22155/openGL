@@ -1,9 +1,8 @@
 import pygame
 from pygame.locals import * 
 from gl import Renderer
-from buffer import Buffer
 from shaders import *
-from model import Model
+from model import *
 width = 800
 height = 800
 
@@ -17,10 +16,10 @@ rend = Renderer(screen)
 
 
 #acepta pnj y jpg
-astModel = Model("models/face.obj")
-astModel.AddTexture("models/textures/model.bmp")
-astModel.rotation.y = 180
-rend.scene.append(astModel)
+faceModel = Model("models/face.obj")
+faceModel.AddTexture("models/model.bmp")
+faceModel.rotation.y = 180
+rend.scene.append(faceModel)
 isRunning = True
 
 while isRunning:
@@ -40,13 +39,13 @@ while isRunning:
                 rend.WireframeMode()
                 
     if keys[K_LEFT]:
-        astModel.rotation.y -= 10 * deltaTime     
+        faceModel.rotation.y -= 10 * deltaTime     
     if keys[K_RIGHT]:
-        astModel.rotation.y += 10 * deltaTime  
+        faceModel.rotation.y += 10 * deltaTime  
     if keys[K_UP]:
-        astModel.rotation.x -= 10 * deltaTime  
+        faceModel.rotation.x -= 10 * deltaTime  
     if keys[K_DOWN]:
-        astModel.rotation.x += 10 * deltaTime  
+        faceModel.rotation.x += 10 * deltaTime  
     
     rend.time += deltaTime       
     # print(deltaTime)

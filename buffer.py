@@ -24,16 +24,19 @@ class Buffer(object):
                      self.vertBuffer.nbytes,# buffer size in bytes
                      self.vertBuffer, # buffer data
                      GL_STATIC_DRAW) #usage
-        #atributo pos
+        
+        # atributos
+        
+        # atributo pos
         glVertexAttribPointer(0, # attribute number
                               3, # size
                               GL_FLOAT, # type
                               GL_FALSE, # is normalized
-                              4 * 6, # Stride size in bytes
+                              4 * 8, # Stride size in bytes
                               ctypes.c_void_p(0)) # Offset 
         
         glEnableVertexAttribArray(0)
-        #atributo color
+        #atributo coords tex
         glVertexAttribPointer(1, # attribute number
                               2, # size
                               GL_FLOAT, # type
