@@ -13,11 +13,10 @@ clock = pygame.time.Clock()
 
 rend = Renderer(screen) 
 
-rend.SetShaders(vertex_shader, fragment_shader)
 
 #acepta pnj y jpg
-faceModel = Model("models/face.obj")
-faceModel.AddTexture("models/textures/model.bmp")
+faceModel = Model("models/buffalo.obj")
+faceModel.AddTexture("models/textures/buffalo.bmp")
 faceModel.translation.z = - 5
 faceModel.scale.x = 2
 faceModel.scale.y = 2
@@ -25,6 +24,10 @@ faceModel.scale.z = 2
 rend.scene.append(faceModel)
 
 isRunning = True
+
+vShader = vertex_shader
+fShader = fragment_shader
+rend.SetShaders(vShader, fShader)
 
 while isRunning:
     deltaTime = clock.tick(60) / 1000
@@ -41,13 +44,27 @@ while isRunning:
                 rend.FilledMode()
             elif event.key == pygame.K_2:
                 rend.WireframeMode()
-            elif event.key == pygame.K_3:
-                rend.SetShaders(vertex_shader, fragment_shader)
-            elif event.key == pygame.K_4:
-                rend.SetShaders(fat_shader, fragment_shader)
-            elif event.key == pygame.K_5:
-                rend.SetShaders(water_shader, fragment_shader)
                 
+            elif event.key == pygame.K_3:
+                vShader = vertex_shader
+                rend.SetShaders(vShader, fShader)
+            
+            elif event.key == pygame.K_4:
+                vShader = fat_shader 
+                rend.SetShaders(vShader, fShader)
+            
+            elif event.key == pygame.K_5:
+                vShader = water_shader
+                rend.SetShaders(vShader, fShader)
+            
+            elif event.key == pygame.K_6:
+                fShader = fragment_shader
+                rend.SetShaders(vShader, fShader)
+            
+            elif event.key == pygame.K_7:
+                fShader = negative_shader
+                rend.SetShaders(vShader, fShader)
+    #model            
     if keys[K_LEFT]:
         faceModel.rotation.y -= 10 * deltaTime     
     if keys[K_RIGHT]:
@@ -57,6 +74,7 @@ while isRunning:
     if keys[K_DOWN]:
         faceModel.rotation.x += 10 * deltaTime  
     
+    #camera
     if keys[K_a]:
         rend.camera.position.x -= 1* deltaTime
     if keys[K_d]:
@@ -65,6 +83,29 @@ while isRunning:
         rend.camera.position.y -= 1* deltaTime  
     if keys[K_s]:
         rend.camera.position.y += 1* deltaTime
+    if keys[K_g]:
+        rend.camera.position.z -= 1* deltaTime  
+    if keys[K_t]:
+        rend.camera.position.z += 1* deltaTime
+        
+    #light
+    if keys[K_i]:
+        rend.pointLight.x -= 1 * deltaTime
+    if keys[K_p]:
+        rend.pointLight.x += 1 * deltaTime
+    if keys[K_l]:
+        rend.pointLight.y -= 1 * deltaTime
+    if keys[K_o]:
+        rend.pointLight.y += 1 * deltaTime
+    if keys[K_i]:
+        rend.pointLight.x -= 1 * deltaTime
+    if keys[K_p]:
+        rend.pointLight.x += 1 * deltaTime
+    if keys[K_k]:
+        rend.pointLight.z -= 1 * deltaTime
+    if keys[K_m]:
+        rend.pointLight.z += 1 * deltaTime
+        
     rend.time += deltaTime       
     
     rend.camera.LookAt(faceModel.translation)

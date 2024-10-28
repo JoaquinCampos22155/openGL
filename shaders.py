@@ -8,6 +8,7 @@ layout (location = 2) in vec3 normals;
 
 out vec2 outTexCoords;
 out vec3 outNormals; 
+out vec4 outPosition;
 
 uniform float time;
 uniform mat4 modelMatrix;
@@ -16,7 +17,9 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+    outPosition = modelMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * viewMatrix * outPosition;
+
     outTexCoords = texCoords;
     outNormals= normals;
 }
@@ -32,6 +35,7 @@ layout (location = 2) in vec3 normals;
 
 out vec2 outTexCoords;
 out vec3 outNormals; 
+out vec4 outPosition;
 
 uniform float time;
 uniform mat4 modelMatrix;
@@ -40,7 +44,8 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position + normals * sin(time) / 10, 1.0);
+    outPosition = modelMatrix * vec4(position + normals * sin(time) / 10, 1.0);
+    gl_Position = projectionMatrix * viewMatrix * outPosition;
     outTexCoords = texCoords;
     outNormals= normals;
 }
@@ -56,6 +61,7 @@ layout (location = 2) in vec3 normals;
 
 out vec2 outTexCoords;
 out vec3 outNormals; 
+out vec4 outPosition;
 
 uniform float time;
 uniform mat4 modelMatrix;
@@ -64,17 +70,37 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position + vec3(0,1,0) * sin(time * position.x * 5) / 10, 1.0);
+    outPosition = modelMatrix * vec4(position + vec3(0,1,0) * sin(time * position.x * 5) / 10, 1.0);
+    gl_Position = projectionMatrix * viewMatrix * outPosition;
     outTexCoords = texCoords;
     outNormals= normals;
 }
 '''
-
 fragment_shader = '''
 #version 450 core
 
 in vec2 outTexCoords;
 in vec3 outNormals;
+in vec4 outPosition;
+
+uniform sampler2D tex;
+uniform vec3 pointLight;
+
+out vec4 fragColor;
+
+void main()
+{
+    float intensity = dot(outNormals, normalize(pointLight - outPosition.xyz));
+    fragColor = texture(tex, outTexCoords) * intensity;
+}
+''' 
+
+negative_shader = '''
+#version 450 core
+
+in vec2 outTexCoords;
+in vec3 outNormals;
+in vec4 outPosition;
 
 uniform sampler2D tex;
 
@@ -82,6 +108,6 @@ out vec4 fragColor;
 
 void main()
 {
-    fragColor = texture(tex, outTexCoords);
+    fragColor = 1- (texture(tex, outTexCoords));
 }
 ''' 

@@ -16,6 +16,9 @@ class Renderer(object):
         self.camera = Camera(self.width, self.height)
                 
         self.time = 0
+        self.value = 0
+        
+        self.pointLight = glm.vec3(0,0,0)
         
         self.scene = [ ]
         self.active_shaders = None
@@ -51,6 +54,7 @@ class Renderer(object):
                                    1,
                                    GL_FALSE,
                                    glm.value_ptr(self.camera.GetProjectionMatrix()))
+            glUniform3fv(glGetUniformLocation(self.active_shaders, "pointLight"), 1, glm.value_ptr(self.pointLight))
         
         for obj in self.scene:
             if self.active_shaders is not None:
