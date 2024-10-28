@@ -2,6 +2,8 @@ import glm
 
 from OpenGL.GL import *
 from OpenGL.GL.shaders import compileProgram, compileShader
+from camera import *
+
 class Renderer(object):
     def __init__(self, screen):
         self.screen = screen
@@ -10,7 +12,9 @@ class Renderer(object):
         glClearColor(0.2,0.2,0.2,1.0)    
         glEnable(GL_DEPTH_TEST)
         glViewport(0,0,self.width, self.height)
-
+        
+        self.camera = Camera(self.width, self.height)
+                
         self.time = 0
         
         self.scene = [ ]
@@ -38,12 +42,22 @@ class Renderer(object):
             
             glUniform1f(glGetUniformLocation(self.active_shaders, "time"), self.time)
             
+            glUniformMatrix4fv(glGetUniformLocation(self.active_shaders, "viewMatrix"),
+                                   1,
+                                   GL_FALSE,
+                                   glm.value_ptr(self.camera.GetViewMatrix()))
+            
+            glUniformMatrix4fv(glGetUniformLocation(self.active_shaders, "projectionMatrix"),
+                                   1,
+                                   GL_FALSE,
+                                   glm.value_ptr(self.camera.GetProjectionMatrix()))
         
         for obj in self.scene:
             if self.active_shaders is not None:
                 glUniformMatrix4fv(glGetUniformLocation(self.active_shaders, "modelMatrix"),
                                    1,
-                                   GL_FALSE, glm.value_ptr(obj.GetModelMatrix()))
+                                   GL_FALSE,
+                                   glm.value_ptr(obj.GetModelMatrix()))
 
             obj.Render()
     
