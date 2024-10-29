@@ -17,7 +17,7 @@ rend = Renderer(screen)
 #acepta pnj y jpg
 faceModel = Model("models/buffalo.obj")
 faceModel.AddTexture("models/textures/buffalo.bmp")
-faceModel.translation.z = - 5
+faceModel.translation.z = - 10
 faceModel.scale.x = 2
 faceModel.scale.y = 2
 faceModel.scale.z = 2
@@ -47,23 +47,31 @@ while isRunning:
                 
             elif event.key == pygame.K_3:
                 vShader = vertex_shader
-                rend.SetShaders(vShader, fShader)
-            
-            elif event.key == pygame.K_4:
-                vShader = fat_shader 
-                rend.SetShaders(vShader, fShader)
-            
-            elif event.key == pygame.K_5:
-                vShader = water_shader
-                rend.SetShaders(vShader, fShader)
-            
-            elif event.key == pygame.K_6:
                 fShader = fragment_shader
                 rend.SetShaders(vShader, fShader)
             
-            elif event.key == pygame.K_7:
-                fShader = negative_shader
+            elif event.key == pygame.K_4:
+                vShader = deflate_shader 
                 rend.SetShaders(vShader, fShader)
+            
+            elif event.key == pygame.K_5:
+                vShader = twist_shader
+                rend.SetShaders(vShader, fShader)
+            
+            elif event.key == pygame.K_6:
+                vShader = colapse_shader
+                rend.SetShaders(vShader, fShader)
+            
+            elif event.key == pygame.K_7:
+                fShader = bicolor_shader
+                rend.SetShaders(vShader, fShader)
+            elif event.key == pygame.K_8:
+                fShader = noise_shader
+                rend.SetShaders(vShader, fShader)
+            elif event.key == pygame.K_9:
+                fShader = gradient_shader
+                rend.SetShaders(vShader, fShader)
+            
     #model            
     if keys[K_LEFT]:
         faceModel.rotation.y -= 10 * deltaTime     
