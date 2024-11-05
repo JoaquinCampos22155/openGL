@@ -13,6 +13,15 @@ clock = pygame.time.Clock()
 
 rend = Renderer(screen) 
 
+skyboxTextures =  ["skyboxtext/right.jpg",
+                    "skyboxtext/left.jpg",
+                    "skyboxtext/top.jpg",
+                    "skyboxtext/bottom.jpg",
+                    "skyboxtext/front.jpg",
+                    "skyboxtext/back.jpg"]
+
+rend.CreateSkybox(skyboxTextures, skybox_vertex_shader, skybox_fragment_shader)
+
 
 #acepta pnj y jpg
 faceModel = Model("models/buffalo.obj")
@@ -27,6 +36,11 @@ isRunning = True
 
 vShader = vertex_shader
 fShader = fragment_shader
+
+camDistance = 10
+camDistancey = 10
+camAngle = 0
+camAngley = 0
 rend.SetShaders(vShader, fShader)
 
 while isRunning:
@@ -105,20 +119,34 @@ while isRunning:
         rend.pointLight.y -= 1 * deltaTime
     if keys[K_o]:
         rend.pointLight.y += 1 * deltaTime
-    if keys[K_i]:
-        rend.pointLight.x -= 1 * deltaTime
-    if keys[K_p]:
-        rend.pointLight.x += 1 * deltaTime
     if keys[K_k]:
         rend.pointLight.z -= 1 * deltaTime
     if keys[K_m]:
         rend.pointLight.z += 1 * deltaTime
         
-    rend.time += deltaTime       
+    if keys[K_v]:
+        camAngle -= 45 * deltaTime
+    if keys[K_n]:
+        camAngle += 45 * deltaTime
+    # agregar rotacion en y
+    if keys[K_h]:
+        camAngley += 45 * deltaTime
+    if keys[K_b]:
+        camAngley -= 45 * deltaTime
+    
+    if keys[K_c]:
+        camDistancey -= 4 * deltaTime
+    if keys[K_m]:
+        camDistancey += 4 * deltaTime
     
     rend.camera.LookAt(faceModel.translation)
-    
+    rend.camera.Orbit(faceModel.translation, camDistance, camAngle)
+    rend.camera.Orbity(faceModel.translation, camDistancey, camAngley)
+
     rend.Render()
+    
+    rend.time += deltaTime       
+
     pygame.display.flip()	  
 
 pygame.quit()  

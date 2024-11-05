@@ -24,7 +24,23 @@ void main()
     outNormals= normals;
 }
 '''
+skybox_vertex_shader = '''
+#version 450 core
 
+layout (location = 0) in vec3 inPosition;
+
+out vec3 texCoords;
+
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+
+void main()
+{
+    texCoords = inPosition;
+    gl_Position = projectionMatrix * viewMatrix * vec4(inPosition, 1.0);
+}
+
+'''
 
 fat_shader = '''
 #version 450 core
@@ -185,6 +201,21 @@ void main()
 }
 ''' 
 
+skybox_fragment_shader = '''
+#version 450 core
+
+uniform samplerCube skybox;
+
+in vec3 texCoords;
+
+out vec4 fragColor;
+
+void main()
+{
+    fragColor = texture(skybox, texCoords);
+} 
+
+'''
 negative_shader = '''
 #version 450 core
 
