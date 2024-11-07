@@ -5,6 +5,7 @@ from shaders import *
 from model import *
 width = 960
 height = 540
+Video_ejecucion_con_limites_Model_Viewer = "https://youtu.be/lAND0MBIF8g"
 
 pygame.init()
 
@@ -42,7 +43,14 @@ camDistancey = 10
 camAngle = 0
 camAngley = 0
 rend.SetShaders(vShader, fShader)
+min_camAngle = -29
+max_camAngle = 29
 
+min_camAngley = -50
+max_camAngley = 50
+
+min_camDistancey = 12
+max_camDistancey = 25
 while isRunning:
     deltaTime = clock.tick(60) / 1000
 
@@ -126,19 +134,28 @@ while isRunning:
         
     if keys[K_v]:
         camAngle -= 45 * deltaTime
+        print(camAngle)
     if keys[K_n]:
         camAngle += 45 * deltaTime
-    # agregar rotacion en y
+        print(camAngle)
+    camAngle = max(min_camAngle, min(max_camAngle, camAngle))
+    camAngley = max(min_camAngley, min(max_camAngley, camAngley))
+    camDistancey = max(min_camDistancey, min(max_camDistancey, camDistancey))
+
+
+    # orbita en y
     if keys[K_h]:
         camAngley += 45 * deltaTime
+        print(camAngley)
     if keys[K_b]:
         camAngley -= 45 * deltaTime
-    
+        print(camAngley)
     if keys[K_c]:
         camDistancey -= 4 * deltaTime
+        print(camDistancey)
     if keys[K_m]:
         camDistancey += 4 * deltaTime
-    
+        print(camDistancey)
     rend.camera.LookAt(faceModel.translation)
     rend.camera.Orbit(faceModel.translation, camDistance, camAngle)
     rend.camera.Orbity(faceModel.translation, camDistancey, camAngley)
