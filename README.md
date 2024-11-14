@@ -25,7 +25,7 @@ Para hacerlo lo mas fácil posible nos enfocaremos en espacio movimiento de mous
 - **Iluminación**: Posibilidad de mover una luz puntual en la escena.
 
 ## Requisitos
-
+USAR BRANCH DE PROYECTOFINAL
 Para ejecutar este proyecto, necesitarás tener instalados los siguientes paquetes:
 
 - `pygame`
