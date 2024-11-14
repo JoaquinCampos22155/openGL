@@ -3,6 +3,7 @@
 # Proyecto OpenGL con Pygame
 
 Este proyecto usa **OpenGL** y **Pygame** que permite la carga, renderización y manipulación de modelos 3D. El objetivo principal de este proyecto es proporcionar una experiencia interactiva donde el usuario puede explorar modelos 3D con distintas configuraciones y efectos visuales
+- FELICIDADES CARLOS EN SU BODA
 
 ## Contexto
 - **Espacio**: a lo largo del universo nos podemos encontrar con muchas cosas inesperadas, en este caso un jumpscare no sera suficiente, presione la tecla *ESPACIO* para recorrer la lista de modelos con sus respectivos shaders.
