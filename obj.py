@@ -1,3 +1,4 @@
+
 class Obj(object):
 	def __init__(self, filename):
 		# Asumiendo que el archivo es un formato .obj
@@ -5,13 +6,14 @@ class Obj(object):
 			lines = file.read().splitlines()
 			
 		self.vertices = []
-		self.texcoords = []
+		self.texCoords = []
 		self.normals = []
 		self.faces = []
 		
 		for line in lines:
 			# Si la linea no cuenta con un prefijo y un valor,
 			# seguimos a la siguiente la linea
+
 			line = line.rstrip()
 
 			try:
@@ -28,7 +30,7 @@ class Obj(object):
 				
 			elif prefix == "vt": # Coordenadas de textura
 				vts = list(map(float,value.split(" ")))
-				self.texcoords.append([vts[0], vts[1]])
+				self.texCoords.append([vts[0],vts[1]])
 				
 			elif prefix == "vn": # Normales
 				norm = list(map(float,value.split(" ")))
@@ -40,4 +42,4 @@ class Obj(object):
 				for vert in verts:
 					vert = list(map(int, vert.split("/")))
 					face.append(vert)
-				self.faces.append(face) 
+				self.faces.append(face)                                                                                                                                                                                                                                                                                                                                                                                           

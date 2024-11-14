@@ -140,7 +140,7 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    float angle = sin(time + position.y) * 0.5;
+    float angle = sin(time + position.y) * 10;
     mat3 rotation = mat3(cos(angle), 0, sin(angle), 0, 1, 0, -sin(angle), 0, cos(angle));
     vec3 twistedPosition = rotation * position;
     outPosition = modelMatrix * vec4(twistedPosition, 1.0);
@@ -169,7 +169,7 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    float scale = 1.0 + 0.1 * sin(time * 2.0);
+    float scale = 1.0 + 0.9 * sin(time * 1.0);
     vec3 scaledPosition = position * scale;
 
     outPosition = modelMatrix * vec4(scaledPosition, 1.0);
@@ -180,7 +180,40 @@ void main()
 }
 
 '''
+pulseripple_shader = '''
+#version 450 core
 
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 texCoords;
+layout (location = 2) in vec3 normals;
+
+out vec2 outTexCoords;
+out vec3 outNormals; 
+out vec4 outPosition;
+
+uniform float time;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
+
+void main()
+{
+    // Create a ripple effect using a combination of sine waves
+    float rippleFactor = sin(time * 3.0 + length(position.xy) * 10.0) * 0.05;
+    
+    // Introduce a pulsing effect based on the time variable
+    float pulse = 1.0 + 0.1 * sin(time * 1.5);
+
+    // Combine the original position with the ripple and pulse effects
+    vec3 modifiedPosition = position * pulse + vec3(0.0, rippleFactor, 0.0);
+
+    outPosition = modelMatrix * vec4(modifiedPosition, 1.0);
+    gl_Position = projectionMatrix * viewMatrix * outPosition;
+    
+    outTexCoords = texCoords;
+    outNormals = normals;
+}
+'''
 
 fragment_shader = '''
 #version 450 core
@@ -200,6 +233,33 @@ void main()
     fragColor = texture(tex, outTexCoords) * intensity;
 }
 ''' 
+toon_shader = '''
+#version 450 core
+
+in vec2 outTexCoords;
+in vec4 outPosition;
+in vec3 outNormals;
+
+uniform sampler2D tex0;
+uniform vec3 pointLight;
+
+out vec4 fragColor;
+
+void main()
+{
+    vec3 lightDir = normalize(pointLight - outPosition.xyz);
+    float intensity = dot(outNormals, lightDir);
+    
+    if (intensity < 0.33)
+		intensity = 0.2;
+    else if (intensity < 0.66)
+		intensity = 0.6;
+    else
+		intensity = 1.0;
+        
+	fragColor = texture(tex0, outTexCoords) * intensity;
+}
+'''
 
 skybox_fragment_shader = '''
 #version 450 core
